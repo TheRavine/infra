@@ -1,0 +1,12 @@
+ravine-backup ansible_host=aws.la ansible_port=10422 ansible_user=belak ansible_become_user=root ansible_become=true
+
+zidane.belak.io ansible_host=vivi.belak.io ansible_port=11236
+
+[minecraft]
+zidane.belak.io
+
+[overviewer]
+ravine-backup
+
+[wiki]
+zidane.belak.io

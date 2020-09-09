@@ -1,0 +1,43 @@
+- name: create postgres network
+  docker_network:
+    name: postgres
+    driver_options:
+      com.docker.network.bridge.name: postgres0
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"
+
+- name: create postgres data dir
+  file:
+    path: /srv/postgres
+    state: directory
+
+- name: install postgres support packages
+  apt:
+    pkg:
+      - libpq-dev
+      - python-psycopg2
+    state: present
+
+- name: start postgres
+  docker_container:
+    name: postgres
+    image: postgres:11.2
+    restart_policy: on-failure
+    env:
+      POSTGRES_PASSWORD: '{{ postgres_admin_password }}'
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
+    mounts:
+      - type: bind
+        source: /srv/postgres
+        target: /var/lib/postgresql/data
+    ports:
+      # We need to export 5432 to localhost so other ansible automation can use it.
+      - "127.0.0.1:5432:5432"
+    networks:
+      - name: postgres
+    networks_cli_compatible: 'yes'
+    healthcheck:
+      interval: '10s'
+      test: ["CMD", "pg_isready"]
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"

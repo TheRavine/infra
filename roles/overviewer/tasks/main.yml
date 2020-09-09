@@ -1,0 +1,26 @@
+- name: create minecraft data dirs
+  file:
+    path: '/srv/{{ item }}'
+    state: directory
+  with_items:
+    - minecraft
+    - mc-overviewer
+
+- name: start overviewer nginx
+  docker_container:
+    name: mc-overviewer-nginx
+    image: nginx:latest
+    restart_policy: on-failure
+    networks:
+      - name: www
+    networks_cli_compatible: 'yes'
+    mounts:
+      - type: bind
+        source: /srv/mc-overviewer
+        target: /usr/share/nginx/html
+        read_only: 'true'
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.mc-overviewer.rule: "Host(`{{ overviewer_hostname }}`)"
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"

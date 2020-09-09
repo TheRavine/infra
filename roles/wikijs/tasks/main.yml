@@ -1,0 +1,46 @@
+- name: create wikijs data dir
+  file:
+    path: /srv/wikijs
+    state: directory
+
+- name: create wikijs postgres database
+  postgresql_db:
+    login_password: '{{ postgres_admin_password }}'
+    login_host: '127.0.0.1'
+    name: wikijs
+
+- name: create wikijs postgres user
+  postgresql_user:
+    login_password: '{{ postgres_admin_password }}'
+    login_host: '127.0.0.1'
+    name: wikijs
+    db: wikijs
+    password: '{{ wikijs_postgres_password }}'
+
+- name: start wiki.js
+  docker_container:
+    name: wikijs
+    image: requarks/wiki:2
+    restart_policy: on-failure
+    networks:
+      - name: bridge
+      - name: postgres
+      - name: www
+    networks_cli_compatible: 'yes'
+    labels:
+      traefik.enable: 'true'
+      traefik.http.routers.wikijs.rule: "Host(`{{ wikijs_hostname }}`)"
+      traefik.http.services.wikijs.loadBalancer.server.port: '3000'
+    mounts:
+      - type: bind
+        source: /srv/wikijs
+        target: /wiki/data/content
+    env:
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: '5432'
+      DB_NAME: wikijs
+      DB_USER: wikijs
+      DB_PASS: '{{ wikijs_postgres_password }}'
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"

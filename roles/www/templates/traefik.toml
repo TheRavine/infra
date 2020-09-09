@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+
+defaultEntryPoints = ["http"]
+
+# Enable logging
+[log]
+  level = "INFO"
+
+# Enable access logs
+#[accessLog]
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+
+# Allow loading from running docker containers, but assume not exposed
+# by default.
+[providers.docker]
+  network = "www"
+  endpoint = "unix:///var/run/docker.sock"
+  exposedByDefault = false

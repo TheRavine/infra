@@ -1,0 +1,32 @@
+- name: create minecraft data dirs
+  file:
+    path: '/srv/minecraft'
+    state: directory
+
+- name: start minecraft
+  docker_container:
+    restart_policy: on-failure
+    name: minecraft
+    image: itzg/minecraft-server:multiarch
+    mounts:
+      - type: bind
+        source: /srv/minecraft
+        target: /data
+    labels:
+      # Disable auto-update on this container because it's really disruptive.
+      com.centurylinklabs.watchtower.enable: "false"
+    env:
+      USE_AIKAR_FLAGS: 'true'
+      VERSION: '1.16.2'
+      FABRICVERSION: '0.6.1.45'
+      TYPE: 'fabric'
+      EULA: 'TRUE'
+      MAX_MEMORY: '8G'
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "{{ minecraft_rcon_password }}"
+    ports:
+      - "25565:25565"
+      - "25575:25575"
+    interactive: 'true'
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"

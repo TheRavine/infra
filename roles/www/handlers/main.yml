@@ -1,0 +1,2 @@
+- name: restart traefik
+  command: docker restart traefik

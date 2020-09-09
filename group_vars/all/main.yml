@@ -1,0 +1,6 @@
+ansible_vault_password: '{{ vault_ansible_vault_password }}'
+minecraft_rcon_password: '{{ vault_minecraft_rcon_password }}'
+overviewer_hostname: '{{ vault_overviewer_hostname }}'
+postgres_admin_password: '{{ vault_postgres_admin_password }}'
+wikijs_hostname: '{{ vault_wikijs_hostname }}'
+wikijs_postgres_password: '{{ vault_wikijs_postgres_password }}'

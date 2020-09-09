@@ -1,0 +1,38 @@
+- name: install common packages
+  apt:
+    state: present
+    pkg:
+      - aptitude
+      - build-essential
+      - curl
+      - fail2ban
+      - git
+      - htop
+      - logrotate
+      - molly-guard
+      - mosh
+      - ncdu
+      - net-tools
+      - ntp
+      - rsync
+      - tmux
+      - vim
+      - virtualenv
+      - virtualenvwrapper
+
+- name: install common packages for ansible
+  apt:
+    state: present
+    pkg:
+      - apt-transport-https
+      - python-apt
+      - python-dev
+      - python-requests
+
+- name: generate ed25519 key for root
+  command : ssh-keygen -q -t ed25519 -f /root/.ssh/id_ed25519 -C "root@{{ inventory_hostname }}" -N ""
+  args:
+    creates: /root/.ssh/id_ed25519
+
+- name: start fail2ban
+  service: name=fail2ban state=started enabled=yes

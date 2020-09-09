@@ -1,0 +1,48 @@
+- name: create www network
+  docker_network:
+    name: www
+    driver_options:
+      com.docker.network.bridge.name: www0
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"
+
+- name: create additional traefik config dir
+  file:
+    path: /srv/traefik
+    state: directory
+
+- name: create traefik acme store
+  copy:
+    force: no
+    content: ""
+    dest: /srv/traefik/acme.json
+    mode: 0600
+
+- name: start traefik
+  docker_container:
+    name: traefik
+    image: traefik
+    restart_policy: on-failure
+    networks:
+      - name: bridge
+      - name: www
+    networks_cli_compatible: 'yes'
+    mounts:
+      - type: bind
+        source: /srv/traefik
+        target: /etc/traefik
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    ports:
+      - "80:80"
+      - "443:443"
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python-docker"
+
+- name: create traefik config file
+  template:
+    src: 'traefik.toml'
+    dest: /srv/traefik/traefik.toml
+  notify:
+    - restart traefik
