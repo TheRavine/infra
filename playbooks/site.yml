@@ -2,7 +2,6 @@
   roles:
     - base
     - docker
-    - postgres
     - www
   handlers:
     - import_tasks: "global_handlers.yml"
