@@ -17,8 +17,8 @@
       com.centurylinklabs.watchtower.enable: "false"
     env:
       USE_AIKAR_FLAGS: 'true'
-      VERSION: '1.16.2'
-      FABRICVERSION: '0.6.1.45'
+      VERSION: '1.16.3'
+      FABRICVERSION: '0.6.1.51'
       TYPE: 'fabric'
       EULA: 'TRUE'
       MAX_MEMORY: '8G'
