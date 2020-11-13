@@ -20,7 +20,7 @@
       com.centurylinklabs.watchtower.enable: "false"
     env:
       USE_AIKAR_FLAGS: 'true'
-      VERSION: '1.16.3'
+      VERSION: '1.16.4'
       FABRICVERSION: '0.6.1.51'
       TYPE: 'fabric'
       EULA: 'TRUE'
