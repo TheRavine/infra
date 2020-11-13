@@ -56,6 +56,13 @@
     path: /root/.docker
     state: directory
 
+- name: create docker daemon config file
+  template:
+    src: 'daemon.json'
+    dest: /etc/docker/daemon.json
+  notify:
+    - restart docker
+
 - name: start watchtower
   docker_container:
     name: watchtower

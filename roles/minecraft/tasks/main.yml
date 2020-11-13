@@ -12,6 +12,9 @@
       - type: bind
         source: /srv/minecraft
         target: /data
+      - type: bind
+        source: /tmp/dogstatsd.sock
+        target: /tmp/dogstatsd.sock
     labels:
       # Disable auto-update on this container because it's really disruptive.
       com.centurylinklabs.watchtower.enable: "false"
