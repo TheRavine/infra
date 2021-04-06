@@ -1,14 +1,14 @@
 ravine-backup ansible_host=aws.la ansible_port=10422 ansible_user=belak ansible_become_user=root ansible_become=true
 
-herobrine.belak.io
-zidane.belak.io ansible_host=vivi.belak.io ansible_port=11236
+herobrine.elwert.dev
+zidane.elwert.dev ansible_host=vivi.elwert.dev ansible_port=11236
 
 [minecraft]
-herobrine.belak.io
-zidane.belak.io
+herobrine.elwert.dev
+zidane.elwert.dev
 
 [overviewer]
 ravine-backup
 
 [wiki]
-zidane.belak.io
+zidane.elwert.dev
