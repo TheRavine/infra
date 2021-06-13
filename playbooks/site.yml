@@ -2,10 +2,16 @@
   roles:
     - base
     - docker
-    - www
   handlers:
     - import_tasks: "global_handlers.yml"
   tags: base
+
+- hosts: wiki:overviewer
+  roles:
+    - www
+  handlers:
+    - import_tasks: "global_handlers.yml"
+  tags: www
 
 - hosts: overviewer
   roles:

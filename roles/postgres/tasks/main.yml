@@ -3,8 +3,6 @@
     name: postgres
     driver_options:
       com.docker.network.bridge.name: postgres0
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"
 
 - name: create postgres data dir
   file:
@@ -39,5 +37,3 @@
     healthcheck:
       interval: '10s'
       test: ["CMD", "pg_isready"]
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"

@@ -42,5 +42,3 @@
       DB_NAME: wikijs
       DB_USER: wikijs
       DB_PASS: '{{ wikijs_postgres_password }}'
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"

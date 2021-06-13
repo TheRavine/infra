@@ -22,5 +22,3 @@
     labels:
       traefik.enable: 'true'
       traefik.http.routers.mc-overviewer.rule: "Host(`{{ overviewer_hostname }}`)"
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"

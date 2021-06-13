@@ -3,8 +3,6 @@
     name: www
     driver_options:
       com.docker.network.bridge.name: www0
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"
 
 - name: create additional traefik config dir
   file:
@@ -37,8 +35,6 @@
     ports:
       - "80:80"
       - "443:443"
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"
 
 - name: create traefik config file
   template:

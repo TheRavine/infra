@@ -3,11 +3,18 @@
     path: '/srv/minecraft'
     state: directory
 
+- name: update minecraft
+  docker_image:
+    name: itzg/minecraft-server:java8-multiarch
+    source: pull
+    force_source: 'yes'
+  when: update_docker_images is defined
+
 - name: start minecraft
   docker_container:
     restart_policy: on-failure
     name: minecraft
-    image: itzg/minecraft-server:multiarch
+    image: itzg/minecraft-server:java8-multiarch
     mounts:
       - type: bind
         source: /srv/minecraft
@@ -20,9 +27,10 @@
       com.centurylinklabs.watchtower.enable: "false"
     env:
       USE_AIKAR_FLAGS: 'true'
-      VERSION: '1.16.4'
-      FABRICVERSION: '0.6.1.51'
-      TYPE: 'fabric'
+      VERSION: '{{ minecraft_version }}'
+      FABRICVERSION: '{{ minecraft_fabric_version }}'
+      FORGEVERSION: '{{ minecraft_forge_version }}'
+      TYPE: '{{ minecraft_server_type }}'
       EULA: 'TRUE'
       MAX_MEMORY: '8G'
       ENABLE_RCON: "true"
@@ -31,5 +39,3 @@
       - "25565:25565"
       - "25575:25575"
     interactive: 'true'
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"

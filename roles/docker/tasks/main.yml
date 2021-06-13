@@ -14,7 +14,7 @@
 
 - name: add docker repo
   apt_repository:
-    repo: 'deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable'
+    repo: 'deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable'
     state: present
     filename: docker
 
@@ -23,27 +23,7 @@
     state: present
     pkg:
       - docker-ce
-
-- name: install docker python packages
-  pip:
-    name:
-      - docker
-      - docker-compose
-    virtualenv: /srv/docker/venv
-
-- name: symlink python binary to /usr/local/bin/python-docker
-  file:
-    path: "/usr/local/bin/python-docker"
-    src: "/srv/docker/venv/bin/python"
-    state: "link"
-
-- name: symlink selected python package binaries to /usr/local/bin
-  file:
-    path: "/usr/local/bin/{{ item }}"
-    src: "/srv/docker/venv/bin/{{ item }}"
-    state: "link"
-  with_items:
-    - docker-compose
+      - python3-docker
 
 - name: create docker group
   group: name=docker system=true state=present
@@ -63,17 +43,22 @@
   notify:
     - restart docker
 
-- name: start watchtower
+- name: ensure watchtower is not running
   docker_container:
     name: watchtower
-    image: containrrr/watchtower
-    restart_policy: on-failure
-    mounts:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-    env:
-      WATCHTOWER_CLEANUP: 'true'
-      WATCHTOWER_POLL_INTERVAL: '{{ watchtower_interval }}'
-  vars:
-    ansible_python_interpreter: "/usr/bin/env python-docker"
+    state: absent
+
+# - name: start watchtower
+#   docker_container:
+#     name: watchtower
+#     image: containrrr/watchtower
+#     restart_policy: on-failure
+#     mounts:
+#       - type: bind
+#         source: /var/run/docker.sock
+#         target: /var/run/docker.sock
+#     env:
+#       WATCHTOWER_CLEANUP: 'true'
+#       WATCHTOWER_POLL_INTERVAL: '{{ watchtower_interval }}'
+#   vars:
+#     ansible_python_interpreter: "/usr/bin/env python-docker"
