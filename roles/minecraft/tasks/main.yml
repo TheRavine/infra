@@ -5,7 +5,7 @@
 
 - name: update minecraft
   docker_image:
-    name: itzg/minecraft-server:java8-multiarch
+    name: itzg/minecraft-server:latest
     source: pull
     force_source: 'yes'
   when: update_docker_images is defined
@@ -14,7 +14,7 @@
   docker_container:
     restart_policy: on-failure
     name: minecraft
-    image: itzg/minecraft-server:java8-multiarch
+    image: itzg/minecraft-server:latest
     mounts:
       - type: bind
         source: /srv/minecraft
