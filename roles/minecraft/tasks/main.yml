@@ -26,7 +26,7 @@
       # Disable auto-update on this container because it's really disruptive.
       com.centurylinklabs.watchtower.enable: "false"
     env:
-      USE_AIKAR_FLAGS: 'true'
+      #USE_AIKAR_FLAGS: 'true'
       VERSION: '{{ minecraft_version }}'
       FABRICVERSION: '{{ minecraft_fabric_version }}'
       FORGEVERSION: '{{ minecraft_forge_version }}'
